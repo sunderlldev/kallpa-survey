@@ -1,4 +1,4 @@
-# kallpa-survey — Plataforma de Encuestas Interactivas
+# Plataforma de Encuestas Interactivas | kallpa-survey
 
 Plataforma web de encuestas interactivas desarrollada para Yachay-Tech. Permite crear simulaciones con preguntas encadenadas, calcular perfiles de resultado según el puntaje obtenido y mostrar recomendaciones personalizadas al usuario al finalizar.
 
