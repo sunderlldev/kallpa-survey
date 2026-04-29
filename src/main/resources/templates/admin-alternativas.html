@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Alternativas</title>
+	<style>
+		* {
+			box-sizing: border-box;
+			font-family: Arial, sans-serif;
+		}
+
+		body {
+			margin: 0;
+			background: linear-gradient(135deg, #0f172a, #1e3a8a);
+			min-height: 100vh;
+			padding: 30px;
+		}
+
+		.container {
+			max-width: 1100px;
+			margin: 0 auto;
+		}
+
+		.box {
+			background: white;
+			border-radius: 16px;
+			padding: 24px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			margin-bottom: 20px;
+		}
+
+		input,
+		select {
+			width: 100%;
+			padding: 12px;
+			margin-top: 6px;
+			margin-bottom: 14px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+		}
+
+		.btn {
+			display: inline-block;
+			padding: 10px 16px;
+			background: #2563eb;
+			color: white;
+			text-decoration: none;
+			border: none;
+			border-radius: 10px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.btn:hover {
+			background: #1d4ed8;
+		}
+
+		.btn-sec {
+			display: inline-block;
+			padding: 10px 16px;
+			background: #6b7280;
+			color: white;
+			text-decoration: none;
+			border: none;
+			border-radius: 10px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.btn-sec:hover {
+			background: #4b5563;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 14px;
+		}
+
+		th,
+		td {
+			padding: 12px;
+			border-bottom: 1px solid #ddd;
+			text-align: left;
+		}
+
+		th {
+			background: #f3f4f6;
+		}
+
+		.link {
+			color: #2563eb;
+			text-decoration: none;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="box">
+			<h1>Alternativas de la pregunta</h1>
+			<p><strong th:text="${pregunta.texto}">Pregunta</strong></p>
+			<a class="btn-sec"
+				th:href="@{'/admin/simulacion/' + ${pregunta.simulacion.idSimulacion} + '/preguntas'}">Volver</a>
+		</div>
+
+		<div class="box">
+			<h2>Nueva alternativa</h2>
+
+			<form th:action="@{'/admin/pregunta/' + ${pregunta.idPregunta} + '/alternativas/guardar'}" method="post">
+				<label>Texto de la alternativa</label>
+				<input type="text" name="texto" required>
+
+				<label>Puntaje</label>
+				<input type="number" name="puntaje" required>
+
+				<label>Siguiente pregunta</label>
+				<select name="idSiguientePregunta">
+					<option value="">-- Sin siguiente pregunta (termina flujo) --</option>
+					<option th:each="p : ${preguntasSimulacion}" th:value="${p.idPregunta}" th:text="${p.texto}">
+					</option>
+				</select>
+
+				<button class="btn" type="submit">Guardar alternativa</button>
+			</form>
+		</div>
+
+		<div class="box">
+			<h2>Alternativas registradas</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Texto</th>
+						<th>Puntaje</th>
+						<th>Siguiente pregunta</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="alt : ${alternativas}">
+						<td th:text="${alt.idAlternativa}">1</td>
+						<td th:text="${alt.texto}">Texto</td>
+						<td th:text="${alt.puntaje}">0</td>
+						<td th:if="${alt.siguientePregunta != null}" th:text="${alt.siguientePregunta.texto}">Siguiente
+						</td>
+						<td th:if="${alt.siguientePregunta == null}">Fin de simulación</td>
+						<td>
+							<a class="link"
+								th:href="@{'/admin/alternativa/' + ${alt.idAlternativa} + '/editar'}">Editar</a>
+							|
+							<a class="link" th:href="@{'/admin/alternativa/' + ${alt.idAlternativa} + '/desactivar'}"
+								onclick="return confirm('¿Deseas desactivar esta alternativa?');">
+								Desactivar
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div th:replace="~{fragments/watson-widget :: widget}"></div>
+
+</body>
+
+</html>

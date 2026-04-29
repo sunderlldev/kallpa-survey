@@ -1,0 +1,190 @@
+:root {
+    --watson-primary: #0f62fe;
+    --watson-primary-hover: #0353e9;
+    --watson-bg-light: #ffffff;
+    --watson-bg-dark: #f4f4f4;
+    --watson-text-primary: #161616;
+    --watson-text-secondary: #525252;
+    --watson-border: #e0e0e0;
+    --watson-badge: #e81818;
+    --watson-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --watson-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --watson-radius: 8px;
+    --watson-transition: all 0.3s cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+#watson-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+#watson-toggle {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--watson-primary) 0%, var(--watson-primary-hover) 100%);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--watson-shadow-lg);
+    transition: var(--watson-transition);
+    padding: 0;
+}
+
+#watson-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 32px rgba(15, 98, 254, 0.3);
+}
+
+#watson-toggle:active {
+    transform: scale(0.95);
+}
+
+#watson-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--watson-badge);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+#watson-panel {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 420px;
+    height: 600px;
+    background: var(--watson-bg-light);
+    border-radius: var(--watson-radius);
+    box-shadow: var(--watson-shadow-lg);
+    border: 1px solid var(--watson-border);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+#watson-panel.active {
+    display: flex;
+}
+
+.watson-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--watson-text-secondary);
+}
+
+.watson-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--watson-bg-dark);
+    border-top-color: var(--watson-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.watson-loading-text {
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    #watson-container {
+        bottom: 16px;
+        right: 16px;
+    }
+
+    #watson-toggle {
+        width: 48px;
+        height: 48px;
+    }
+
+    #watson-panel {
+        width: 100%;
+        height: 100%;
+        max-width: 100vw;
+        max-height: 100vh;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+        animation: slideInMobile 0.3s ease-out;
+    }
+
+    @keyframes slideInMobile {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+#watson-toggle:focus-visible {
+    outline: 2px solid var(--watson-primary);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #watson-toggle,
+    #watson-panel,
+    #watson-badge {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    #watson-toggle:hover {
+        transform: none;
+    }
+
+    #watson-toggle:active {
+        transform: none;
+    }
+}

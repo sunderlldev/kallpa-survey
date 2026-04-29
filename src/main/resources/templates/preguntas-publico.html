@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Simulaciones disponibles</title>
+	<style>
+		* {
+			box-sizing: border-box;
+			font-family: Arial, sans-serif;
+		}
+
+		body {
+			margin: 0;
+			background: linear-gradient(135deg, #0f172a, #1e3a8a);
+			min-height: 100vh;
+			padding: 40px 20px;
+		}
+
+		.container {
+			max-width: 900px;
+			margin: 0 auto;
+		}
+
+		.header {
+			background: white;
+			border-radius: 16px;
+			padding: 28px;
+			margin-bottom: 24px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+
+		.header h1 {
+			margin: 0 0 8px;
+			color: #111827;
+			font-size: 34px;
+		}
+
+		.header p {
+			margin: 0;
+			color: #6b7280;
+		}
+
+		.alert {
+			padding: 14px;
+			border-radius: 10px;
+			margin-bottom: 18px;
+			font-size: 14px;
+		}
+
+		.alert-error {
+			background: #fee2e2;
+			color: #991b1b;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 20px;
+		}
+
+		.card {
+			background: white;
+			border-radius: 16px;
+			padding: 24px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+		}
+
+		.card h3 {
+			margin-top: 0;
+			margin-bottom: 10px;
+			color: #111827;
+			font-size: 22px;
+		}
+
+		.card p {
+			color: #4b5563;
+			line-height: 1.5;
+			min-height: 60px;
+		}
+
+		.btn {
+			display: inline-block;
+			margin-top: 12px;
+			padding: 12px 18px;
+			background: #2563eb;
+			color: white;
+			text-decoration: none;
+			border-radius: 10px;
+			font-weight: bold;
+			transition: 0.2s ease;
+		}
+
+		.btn:hover {
+			background: #1d4ed8;
+		}
+
+		.actions {
+			margin-top: 24px;
+			text-align: center;
+		}
+
+		.link-back {
+			color: white;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		.link-back:hover {
+			text-decoration: underline;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="header">
+			<h1>Simulaciones disponibles</h1>
+			<p>Selecciona una simulación para iniciar el recorrido de decisiones</p>
+		</div>
+
+		<div th:if="${param.sinPreguntas}" class="alert alert-error">
+			La simulación seleccionada no tiene una pregunta inicial configurada.
+		</div>
+
+		<div class="grid">
+			<div class="card" th:each="sim : ${simulaciones}">
+				<h3 th:text="${sim.titulo}">Título de simulación</h3>
+				<p th:text="${sim.descripcion}">Descripción de la simulación</p>
+				<a class="btn" th:href="@{'/simulacion/' + ${sim.idSimulacion} + '/iniciar'}">
+					Iniciar simulación
+				</a>
+			</div>
+		</div>
+
+		<div class="actions">
+			<a class="link-back" href="/login">Volver al login</a>
+		</div>
+	</div>
+
+	<div th:replace="~{fragments/watson-widget :: widget}"></div>
+</body>
+
+</html>

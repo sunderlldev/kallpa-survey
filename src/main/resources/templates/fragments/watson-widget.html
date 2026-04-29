@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<th:block th:fragment="widget">
+		<script th:inline="javascript">
+			window.watsonAssistantChatOptions = {
+				integrationID:     /*[[${@watsonProperties.integrationId}]]*/ '',
+				region:            /*[[${@watsonProperties.region}]]*/ '',
+				serviceInstanceID: /*[[${@watsonProperties.serviceInstanceId}]]*/ '',
+				onLoad: async function (instance) {await instance.render();}
+			};
+			setTimeout(function () {
+				var t = document.createElement('script');
+				t.src = 'https://web-chat.global.assistant.watson.appdomain.cloud/versions/latest/WatsonAssistantChatEntry.js';
+				document.head.appendChild(t);
+			});
+		</script>
+	</th:block>
+</body>
+
+</html>

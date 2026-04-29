@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Perfiles de resultado</title>
+	<style>
+		* { box-sizing: border-box; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+
+		body {
+			background: linear-gradient(135deg, #0f172a, #1e3a8a);
+			min-height: 100vh;
+			padding: 30px 20px;
+		}
+
+		.container { max-width: 1000px; margin: 0 auto; }
+
+		.box {
+			background: white;
+			border-radius: 16px;
+			padding: 24px;
+			box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+			margin-bottom: 20px;
+		}
+
+		.box h1 { font-size: 22px; color: #111827; margin-bottom: 4px; }
+		.box p { font-size: 13px; color: #6b7280; margin-bottom: 16px; }
+
+		.info {
+			background: #eff6ff;
+			border: 1px solid #bfdbfe;
+			border-radius: 10px;
+			padding: 12px 16px;
+			font-size: 13px;
+			color: #1d4ed8;
+			margin-bottom: 20px;
+		}
+
+		.btn {
+			display: inline-block;
+			padding: 9px 16px;
+			border-radius: 8px;
+			font-size: 13px;
+			font-weight: bold;
+			text-decoration: none;
+			cursor: pointer;
+			border: none;
+		}
+
+		.btn-primary { background: #2563eb; color: white; }
+		.btn-primary:hover { background: #1d4ed8; }
+		.btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+		.btn-secondary:hover { background: #e5e7eb; }
+		.btn-danger { background: #fee2e2; color: #dc2626; }
+		.btn-danger:hover { background: #fecaca; }
+
+		.actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+
+		table { width: 100%; border-collapse: collapse; }
+		th, td { padding: 12px 14px; border-bottom: 1px solid #e5e7eb; text-align: left; font-size: 14px; }
+		th { background: #f9fafb; color: #374151; font-weight: bold; }
+		td { color: #111827; }
+		.feedback-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #6b7280; font-size: 13px; }
+
+		.range-badge {
+			display: inline-block;
+			background: #eff6ff;
+			color: #1d4ed8;
+			padding: 3px 10px;
+			border-radius: 999px;
+			font-size: 12px;
+			font-weight: bold;
+		}
+
+		.empty { text-align: center; color: #9ca3af; padding: 32px; }
+
+		.modal-overlay {
+			display: none; position: fixed; inset: 0;
+			background: rgba(0,0,0,0.5); z-index: 100;
+			justify-content: center; align-items: center;
+		}
+		.modal-overlay.active { display: flex; }
+
+		.modal {
+			background: white; border-radius: 16px; padding: 28px;
+			width: 100%; max-width: 520px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+			max-height: 90vh; overflow-y: auto;
+		}
+
+		.modal h2 { font-size: 18px; color: #111827; margin-bottom: 20px; }
+
+		.form-group { margin-bottom: 16px; }
+		.form-group label { display: block; font-size: 13px; font-weight: bold; color: #374151; margin-bottom: 6px; }
+		.form-group input, .form-group textarea {
+			width: 100%; padding: 10px 12px; border: 1px solid #d1d5db;
+			border-radius: 8px; font-size: 14px; outline: none;
+		}
+		.form-group input:focus, .form-group textarea:focus { border-color: #2563eb; }
+		.form-group .hint { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+
+		.range-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+		.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+		.modal-actions .btn { flex: 1; text-align: center; }
+	</style>
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="box">
+			<h1 th:text="'Perfiles de: ' + ${simulacion.titulo}">Perfiles</h1>
+			<p th:text="${simulacion.descripcion}">Descripción</p>
+
+			<div class="info">
+				💡 Cada perfil define qué mensaje ve el usuario al terminar según su puntaje. Los rangos no deben solaparse. El sistema asigna el primer perfil cuyo rango contenga el puntaje obtenido.
+			</div>
+
+			<div class="actions">
+				<button class="btn btn-primary" onclick="document.getElementById('modalCrear').classList.add('active')">
+					+ Nuevo perfil
+				</button>
+				<a class="btn btn-secondary" th:href="@{'/admin/simulacion/' + ${simulacion.idSimulacion} + '/preguntas'}">
+					← Preguntas
+				</a>
+				<a class="btn btn-secondary" href="/admin/dashboard">Dashboard</a>
+			</div>
+
+			<div th:if="${#lists.isEmpty(perfiles)}" class="empty">
+				No hay perfiles configurados. Crea al menos uno para que el resultado sea personalizado.
+			</div>
+
+			<table th:unless="${#lists.isEmpty(perfiles)}">
+				<thead>
+					<tr>
+						<th>Perfil</th>
+						<th>Rango de puntaje</th>
+						<th>Mensaje de resultado</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p : ${perfiles}">
+						<td th:text="${p.nombrePerfil}">Nombre</td>
+						<td>
+							<span class="range-badge"
+								th:text="${p.puntajeMin} + ' – ' + ${p.puntajeMax} + ' pts'">
+								0 – 10 pts
+							</span>
+						</td>
+						<td class="feedback-cell" th:text="${p.feedback}">Feedback</td>
+						<td>
+							<button class="btn btn-secondary btn-editar"
+								th:data-id="${p.idPerfil}"
+								th:data-nombre="${p.nombrePerfil}"
+								th:data-descripcion="${p.descripcion != null ? p.descripcion : ''}"
+								th:data-feedback="${p.feedback != null ? p.feedback : ''}"
+								th:data-min="${p.puntajeMin}"
+								th:data-max="${p.puntajeMax}"
+								style="margin-right:6px;">
+								Editar
+							</button>
+							<a class="btn btn-danger"
+								th:href="@{'/admin/perfil/' + ${p.idPerfil} + '/desactivar'}"
+								onclick="return confirm('¿Eliminar este perfil?')">
+								Quitar
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<!-- Modal Crear -->
+	<div id="modalCrear" class="modal-overlay">
+		<div class="modal">
+			<h2>Nuevo perfil de resultado</h2>
+			<form th:action="@{'/admin/simulacion/' + ${simulacion.idSimulacion} + '/perfiles/guardar'}" method="post">
+				<div class="form-group">
+					<label>Nombre del perfil</label>
+					<input type="text" name="nombrePerfil" required placeholder="Ej: Orientado al precio">
+				</div>
+				<div class="form-group">
+					<label>Descripción corta (opcional)</label>
+					<input type="text" name="descripcion" placeholder="Ej: Usuario que prioriza ahorro">
+				</div>
+				<div class="form-group">
+					<label>Mensaje de resultado</label>
+					<textarea name="feedback" rows="4" required
+						placeholder="Ej: Priorizas el ahorro. La Tablet Kallpa Basic es ideal para ti..."></textarea>
+					<p class="hint">Este mensaje se mostrará al usuario al finalizar la simulación.</p>
+				</div>
+				<div class="range-row">
+					<div class="form-group">
+						<label>Puntaje mínimo</label>
+						<input type="number" name="puntajeMin" required min="0" placeholder="0">
+					</div>
+					<div class="form-group">
+						<label>Puntaje máximo</label>
+						<input type="number" name="puntajeMax" required min="0" placeholder="10">
+					</div>
+				</div>
+				<div class="modal-actions">
+					<button type="button" class="btn btn-secondary"
+						onclick="document.getElementById('modalCrear').classList.remove('active')">
+						Cancelar
+					</button>
+					<button type="submit" class="btn btn-primary">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal Editar -->
+	<div id="modalEditar" class="modal-overlay">
+		<div class="modal">
+			<h2>Editar perfil</h2>
+			<form id="formEditar" method="post">
+				<div class="form-group">
+					<label>Nombre del perfil</label>
+					<input type="text" id="editNombre" name="nombrePerfil" required>
+				</div>
+				<div class="form-group">
+					<label>Descripción corta (opcional)</label>
+					<input type="text" id="editDescripcion" name="descripcion">
+				</div>
+				<div class="form-group">
+					<label>Mensaje de resultado</label>
+					<textarea id="editFeedback" name="feedback" rows="4" required></textarea>
+				</div>
+				<div class="range-row">
+					<div class="form-group">
+						<label>Puntaje mínimo</label>
+						<input type="number" id="editMin" name="puntajeMin" required min="0">
+					</div>
+					<div class="form-group">
+						<label>Puntaje máximo</label>
+						<input type="number" id="editMax" name="puntajeMax" required min="0">
+					</div>
+				</div>
+				<div class="modal-actions">
+					<button type="button" class="btn btn-secondary"
+						onclick="document.getElementById('modalEditar').classList.remove('active')">
+						Cancelar
+					</button>
+					<button type="submit" class="btn btn-primary">Actualizar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		document.querySelectorAll('.btn-editar').forEach(function(btn) {
+			btn.addEventListener('click', function() {
+				document.getElementById('formEditar').action = '/admin/perfil/' + this.dataset.id + '/actualizar';
+				document.getElementById('editNombre').value = this.dataset.nombre;
+				document.getElementById('editDescripcion').value = this.dataset.descripcion;
+				document.getElementById('editFeedback').value = this.dataset.feedback;
+				document.getElementById('editMin').value = this.dataset.min;
+				document.getElementById('editMax').value = this.dataset.max;
+				document.getElementById('modalEditar').classList.add('active');
+			});
+		});
+
+		document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+			overlay.addEventListener('click', function(e) {
+				if (e.target === this) this.classList.remove('active');
+			});
+		});
+	</script>
+
+	<div th:replace="~{fragments/watson-widget :: widget}"></div>
+</body>
+
+</html>
