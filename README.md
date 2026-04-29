@@ -1,8 +1,8 @@
 # kallpa-survey
 
-Simulador web de comportamiento del consumidor desarrollado para **Yachay-Tech**, orientado a identificar perfiles de compra de la Tablet Kallpa.
+Plataforma web de encuestas interactivas desarrollada para Yachay-Tech. Permite crear simulaciones con preguntas encadenadas, calcular perfiles de resultado según el puntaje obtenido y mostrar recomendaciones personalizadas al usuario al finalizar.
 
-Los usuarios responden una serie de preguntas y el sistema calcula su perfil automáticamente (orientado al precio, equilibrio o calidad), mostrando una recomendación personalizada al finalizar.
+El administrador puede gestionar múltiples encuestas, preguntas, alternativas y perfiles de resultado desde un panel dedicado.
 
 ## Stack
 
