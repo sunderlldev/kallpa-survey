@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./src/main/resources/img/readme.jpg" alt="Kallpa Survey Preview">
+  <img src="./assets/thumbnail.png" alt="Kallpa Survey Preview">
 </div>
 
 <div align="center">
