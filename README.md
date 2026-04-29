@@ -6,9 +6,9 @@ El administrador puede gestionar múltiples encuestas, preguntas, alternativas y
 
 ## Stack
 
-**Backend** — Spring Boot 3.4 · Java 17 · Spring Data JPA · MySQL · BCrypt  
-**Frontend** — Thymeleaf · HTML/CSS vanilla  
-**Extras** — IBM Watson Assistant (chatbot) · Bootstrap (admin)
+**Backend** - Spring Boot 3.4 · Java 17 · Spring Data JPA · MySQL · BCrypt  
+**Frontend** - Thymeleaf · HTML/CSS vanilla  
+**Extras** - IBM Watson Assistant (chatbot) · Bootstrap (admin)
 
 ## Funcionalidades
 
@@ -32,7 +32,7 @@ watson.region=us-east
 watson.service-instance-id=tu_service_instance_id
 ```
 
-Ejecuta el script `BD_Proyecto.sql` en MySQL para crear la base de datos con los datos iniciales.
+Ejecuta el script `01-SCHEMA.sql` en MySQL para crear la base de datos con los datos iniciales.
 
 ## Equipo
 
