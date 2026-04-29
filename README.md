@@ -86,5 +86,5 @@ watson.service-instance-id=tu_service_instance_id
 
 ## Equipo
 
-Proyecto Integrador — Cibertec, 6to ciclo  
-Grupo 09 · Blas · Alzamora · Retuerto · León
+Proyecto Integrador | Cibertec, 6to ciclo  
+Grupo 09 · Juan Blas · Alzamora · Retuerto · León
