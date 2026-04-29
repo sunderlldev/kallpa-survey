@@ -16,7 +16,6 @@ CREATE TABLE rol (
 
 -- =========================================
 -- 2. TABLA USUARIO
--- password almacenado como hash BCrypt
 -- =========================================
 CREATE TABLE usuario (
     id_usuario     INT PRIMARY KEY AUTO_INCREMENT,
