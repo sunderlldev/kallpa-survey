@@ -32,7 +32,7 @@ watson.region=us-east
 watson.service-instance-id=tu_service_instance_id
 ```
 
-Ejecuta el script `01-SCHEMA.sql` en MySQL para crear la base de datos con los datos iniciales.
+Ejecuta el script `src/main/resources/db/01-SCHEMA.sql` en MySQL para crear la base de datos con los datos iniciales.
 
 ## Equipo
 
